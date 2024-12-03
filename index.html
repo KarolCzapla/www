@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pasek Postępu Lekcji</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .progress-bar {
+            width: 100%;
+            background-color: #f3f3f3;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            overflow: hidden;
+            height: 30px;
+            position: relative;
+        }
+        .progress {
+            height: 100%;
+            background-color: #4caf50;
+            width: 0%;
+            transition: width 0.1s ease-in-out;
+        }
+        .time {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-weight: bold;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <h1>Pasek Postępu Aktualnej Lekcji</h1>
+    <div class="progress-bar">
+        <div class="progress" id="progress"></div>
+        <div class="time" id="time"></div>
+    </div>
+
+    <script>
+        // Przykładowa godzina lekcji: 8:20 - 9:05
+        const startTime = new Date();
+        startTime.setHours(8, 20, 0); // Godzina rozpoczęcia lekcji
+        const endTime = new Date();
+        endTime.setHours(9, 5, 0); // Godzina zakończenia lekcji
+
+        function updateProgressBar() {
+            const now = new Date();
+            const totalDuration = endTime - startTime;
+            const elapsed = now - startTime;
+
+            let progress = Math.min((elapsed / totalDuration) * 100, 100);
+            progress = progress.toFixed(2); // Do dwóch miejsc po przecinku
+
+            const progressBar = document.getElementById("progress");
+            const timeDisplay = document.getElementById("time");
+
+            progressBar.style.width = `${progress}%`;
+            timeDisplay.textContent = `${progress}% ukończone`;
+
+            if (elapsed < totalDuration) {
+                requestAnimationFrame(updateProgressBar);
+            } else {
+                timeDisplay.textContent = "Lekcja zakończona";
+            }
+        }
+
+        updateProgressBar();
+    </script>
+</body>
+</html>
